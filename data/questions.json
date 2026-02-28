@@ -1,0 +1,170 @@
+{
+  "version": "v1",
+  "description": "Retro Bingo Questions",
+  "questions": [
+    {
+      "id": 1,
+      "text": "It worked locally"
+    },
+    {
+      "id": 2,
+      "text": "It looked simple"
+    },
+    {
+      "id": 3,
+      "text": "Not refined"
+    },
+    {
+      "id": 4,
+      "text": "That wasn't in the ticket"
+    },
+    {
+      "id": 5,
+      "text": "Just one small tweak"
+    },
+    {
+      "id": 6,
+      "text": "Weird bug"
+    },
+    {
+      "id": 7,
+      "text": "The estimate was aspirational"
+    },
+    {
+      "id": 8,
+      "text": "Story bigger on the inside"
+    },
+    {
+      "id": 9,
+      "text": "Acceptance criteria written mid-sprint"
+    },
+    {
+      "id": 10,
+      "text": "We will figure it out as we go"
+    },
+    {
+      "id": 11,
+      "text": "Blocked"
+    },
+    {
+      "id": 12,
+      "text": "We forgot to close tickets before the end of the sprint"
+    },
+    {
+      "id": 13,
+      "text": "Retro about the last retro"
+    },
+    {
+      "id": 14,
+      "text": "We need a pre-planning for planning"
+    },
+    {
+      "id": 15,
+      "text": "Who owns this?"
+    },
+    {
+      "id": 16,
+      "text": "Can everyone see my screen?"
+    },
+    {
+      "id": 17,
+      "text": "You're on mute"
+    },
+    {
+      "id": 18,
+      "text": "Let's take that offline"
+    },
+    {
+      "id": 19,
+      "text": "Quick question (not quick)"
+    },
+    {
+      "id": 20,
+      "text": "We'll circle back"
+    },
+    {
+      "id": 21,
+      "text": "Hard stop in 5"
+    },
+    {
+      "id": 22,
+      "text": "Let's park it"
+    },
+    {
+      "id": 23,
+      "text": "Works on my machine"
+    },
+    {
+      "id": 24,
+      "text": "Have you tried resetting it?"
+    },
+    {
+      "id": 25,
+      "text": "CI (Jenkins) is flakey"
+    },
+    {
+      "id": 26,
+      "text": "Legacy code says no"
+    },
+    {
+      "id": 27,
+      "text": "Just add a flag"
+    },
+    {
+      "id": 28,
+      "text": "Temporary solution (forever)"
+    },
+    {
+      "id": 29,
+      "text": "Single point of failure"
+    },
+    {
+      "id": 30,
+      "text": "Silent nodding"
+    },
+    {
+      "id": 31,
+      "text": "Under promise, over deliver"
+    },
+    {
+      "id": 32,
+      "text": "Automation"
+    },
+    {
+      "id": 33,
+      "text": "Clear requirements?"
+    },
+    {
+      "id": 34,
+      "text": "Demo issues"
+    },
+    {
+      "id": 35,
+      "text": "Sunny mentioned PCF"
+    },
+    {
+      "id": 36,
+      "text": "Collaboration"
+    },
+    {
+      "id": 37,
+      "text": "Unplanned work"
+    },
+    {
+      "id": 38,
+      "text": "Spill over"
+    },
+    {
+      "id": 39,
+      "text": "Blocked by IAM team"
+    },
+    {
+      "id": 40,
+      "text": "Side of desk"
+    },
+    {
+      "id": 41,
+      "text": "Burn down"
+    }
+  ]
+}
