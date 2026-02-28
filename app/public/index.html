@@ -4,20 +4,135 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Retro Bingo</title>
+
     <style>
-      body { font-family: system-ui, sans-serif; margin: 0; min-height: 100vh; display: grid; place-items: center; }
-      main { max-width: 720px; padding: 40px 20px; }
-      h1 { margin: 0 0 10px; font-size: 44px; }
-      p { margin: 10px 0; font-size: 18px; line-height: 1.5; }
-      .card { border: 1px solid #e5e7eb; border-radius: 16px; padding: 24px; }
-      .muted { color: #6b7280; }
+      /* Retro fonts */
+      @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+
+      :root{
+        --neon-cyan: #00ffcc;
+        --neon-pink: #ff00cc;
+        --neon-yellow:#ffff00;
+        --link-cyan: #00ffff;
+        --muted-pink:#ff66ff;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+
+        /* Synthwave background */
+        background: radial-gradient(circle at top, var(--neon-pink), #1a0033 70%);
+        color: var(--neon-cyan);
+
+        font-family: 'VT323', monospace;
+        letter-spacing: 1px;
+
+        /* CRT overlay positioning */
+        position: relative;
+        overflow: hidden;
+
+        /* Optional "poster" vibe helpers */
+        text-transform: uppercase;
+      }
+
+      /* CRT scanlines */
+      body::after {
+        content: "";
+        pointer-events: none;
+        position: absolute;
+        inset: 0;
+        background: repeating-linear-gradient(
+          to bottom,
+          rgba(255,255,255,0.05) 0px,
+          rgba(255,255,255,0.05) 2px,
+          transparent 2px,
+          transparent 4px
+        );
+        mix-blend-mode: overlay;
+        opacity: 0.6;
+      }
+
+      main {
+        max-width: 720px;
+        padding: 40px 30px;
+      }
+
+      .card {
+        background: rgba(0, 0, 0, 0.85);
+
+        /* Mix of arcade neon + 90s flyer border vibes */
+        border: 6px double var(--neon-cyan);
+        border-radius: 0;
+
+        padding: 30px;
+
+        /* Hard shadow / poster look */
+        box-shadow: 10px 10px 0 var(--neon-pink);
+
+        /* Keep card above scanlines */
+        position: relative;
+        z-index: 1;
+      }
+
+      h1 {
+        margin: 0 0 20px;
+        font-family: 'Press Start 2P', cursive;
+        font-size: 36px;
+        line-height: 1.4;
+        color: var(--neon-yellow);
+
+        /* Neon glow */
+        text-shadow:
+          0 0 5px var(--neon-pink),
+          0 0 10px var(--neon-pink),
+          0 0 20px var(--neon-pink);
+      }
+
+      /* Blinking cursor */
+      h1::after {
+        content: "_";
+        animation: blink 1s steps(1) infinite;
+      }
+      @keyframes blink { 50% { opacity: 0; } }
+
+      p {
+        margin: 12px 0;
+        font-size: 24px;
+        line-height: 1.35;
+      }
+
+      .muted {
+        color: var(--muted-pink);
+      }
+
+      a {
+        color: var(--link-cyan);
+        text-decoration: none;
+        border-bottom: 2px solid var(--link-cyan);
+      }
+
+      a:hover {
+        color: var(--neon-yellow);
+        border-color: var(--neon-yellow);
+      }
+
+      /* Small responsiveness: keep pixel title readable */
+      @media (max-width: 480px) {
+        main { padding: 28px 18px; }
+        h1 { font-size: 26px; }
+        p { font-size: 22px; }
+      }
     </style>
   </head>
+
   <body>
     <main class="card">
       <h1>Retro Bingo</h1>
       <p class="muted">Date • City • Venue</p>
-      <p>Coming soon to a retro near you</p>
+      <p>Coming soon to a retro near you.</p>
       <p>Contact: <a href="mailto:hello@example.com">hello@example.com</a></p>
     </main>
   </body>
