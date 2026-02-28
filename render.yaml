@@ -1,0 +1,5 @@
+services:
+  - type: web
+    name: event-holding-page
+    env: docker
+    plan: free
