@@ -140,12 +140,20 @@ def index():
     """Facilitator landing page — shows QR code and player count."""
     with get_db() as db:
         game = get_active_game(db)
-        if not game:
-            return "No active game", 500
+        game_active = game is not None
 
-        player_count = db.execute(
-            'SELECT COUNT(*) FROM players WHERE game_id=?', (game['id'],)
-        ).fetchone()[0]
+        if game_active:
+            player_count = db.execute(
+                'SELECT COUNT(*) FROM players WHERE game_id=?', (game['id'],)
+            ).fetchone()[0]
+        else:
+            # Show the most recent ended game's player count
+            last_game = db.execute(
+                'SELECT * FROM games ORDER BY id DESC LIMIT 1'
+            ).fetchone()
+            player_count = db.execute(
+                'SELECT COUNT(*) FROM players WHERE game_id=?', (last_game['id'],)
+            ).fetchone()[0] if last_game else 0
 
     join_url = request.host_url.rstrip('/') + url_for('join')
     qr_b64 = make_qr_b64(join_url)
@@ -155,8 +163,19 @@ def index():
         qr_b64=qr_b64,
         join_url=join_url,
         player_count=player_count,
-        game=game,
+        game_active=game_active,
     )
+
+
+@app.route('/new-game', methods=['POST'])
+def new_game():
+    """Reset: mark all games inactive and start a fresh one."""
+    with get_db() as db:
+        db.execute('UPDATE games SET active=0')
+        db.execute('INSERT INTO games (active) VALUES (1)')
+        db.commit()
+    session.pop('player_id', None)
+    return redirect(url_for('index'))
 
 
 @app.route('/join', methods=['GET', 'POST'])

@@ -43,6 +43,7 @@ Players can continue marking tiles after achieving BINGO. A FULL HOUSE is achiev
 4. One or more players achieve BINGO.
 5. Players continue towards FULL HOUSE.
 6. The RETRO concludes naturally, or the game ends if a player achieves FULL HOUSE.
+7. The game can be restarted.
 
 # DESIGN PRINCIPLES
 

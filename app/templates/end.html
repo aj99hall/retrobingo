@@ -48,6 +48,8 @@ h1{ font-size: clamp(22px, 6vw, 36px); }
 
   <hr style="border:none;border-top:2px dashed var(--neon-cyan);margin:28px 0;opacity:.4;">
 
-  <a href="/join" class="btn">Play Again</a>
+  <form method="POST" action="/new-game">
+    <button type="submit" class="btn">New Game</button>
+  </form>
 </main>
 {% endblock %}

@@ -49,41 +49,42 @@ main{
 {% block body %}
 <main>
   <div class="card">
-    <h1 class="blink">Retro Bingo</h1>
+    <h1 {% if game_active %}class="blink"{% endif %}>Retro Bingo</h1>
     <p style="color:var(--muted-pink)">Facilitator View</p>
 
     <hr class="divider">
 
+    {% if game_active %}
     <p class="stat">Players joined: <span id="player-count">{{ player_count }}</span></p>
+    {% else %}
+    <p class="stat" style="color:var(--neon-pink)">Game Over</p>
+    <p style="font-size:20px; color:var(--muted-pink)">Players this session: <span style="color:var(--neon-yellow); font-family:'Press Start 2P',cursive; font-size:16px;">{{ player_count }}</span></p>
+    {% endif %}
 
     <hr class="divider">
 
+    {% if game_active %}
     <p style="font-size:20px; color:var(--neon-yellow)">Scan to join:</p>
     <div class="qr-wrapper">
       <img src="data:image/png;base64,{{ qr_b64 }}" alt="QR Code to join game">
     </div>
     <p class="join-url">{{ join_url }}</p>
+    {% else %}
+    <div style="text-align:center; margin:24px 0;">
+      <form method="POST" action="/new-game">
+        <button type="submit" class="btn btn--pink">New Game</button>
+      </form>
+    </div>
+    {% endif %}
   </div>
 </main>
 {% endblock %}
 
 {% block extra_script %}
 <script>
-// Refresh player count every 5 seconds
-setInterval(async () => {
-  try {
-    const r = await fetch('/api/poll?since=0');
-    const d = await r.json();
-    if (!d.error) {
-      // Reload to update player count
-      const countEl = document.getElementById('player-count');
-      // Re-fetch count via a lightweight endpoint would be ideal,
-      // but for simplicity we reload the page periodically
-    }
-  } catch(e) {}
-}, 5000);
-
+{% if game_active %}
 // Simple page refresh every 10s to update player count
 setTimeout(() => location.reload(), 10000);
+{% endif %}
 </script>
 {% endblock %}
