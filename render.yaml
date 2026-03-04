@@ -1,5 +1,11 @@
 services:
   - type: web
-    name: event-holding-page
+    name: retrobingo
     env: docker
     plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_PATH
+        value: /tmp/retrobingo.db

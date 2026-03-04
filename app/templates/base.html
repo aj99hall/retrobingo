@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>{% block title %}Retro Bingo{% endblock %}</title>
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'>
+  <rect width='64' height='64' fill='%23000000'/>
+  <rect x='4' y='4' width='56' height='56' fill='%231a0033' stroke='%2300ffcc' stroke-width='4'/>
+  <rect x='12' y='12' width='40' height='40' fill='%23ffff00'/>
+  <line x1='12' y1='26' x2='52' y2='26' stroke='%23000000' stroke-width='3'/>
+  <line x1='12' y1='40' x2='52' y2='40' stroke='%23000000' stroke-width='3'/>
+  <line x1='26' y1='12' x2='26' y2='52' stroke='%23000000' stroke-width='3'/>
+  <line x1='40' y1='12' x2='40' y2='52' stroke='%23000000' stroke-width='3'/>
+  <line x1='12' y1='12' x2='52' y2='52' stroke='%23ff00cc' stroke-width='6'/>
+  <line x1='52' y1='12' x2='12' y2='52' stroke='%23ff00cc' stroke-width='6'/>
+</svg>">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --neon-cyan:   #00ffcc;
+  --neon-pink:   #ff00cc;
+  --neon-yellow: #ffff00;
+  --neon-white:  #ffffff;
+  --link-cyan:   #00ffff;
+  --muted-pink:  #ff66ff;
+  --bg-dark:     #0a0010;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body{
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #2a0044, var(--bg-dark) 70%);
+  color: var(--neon-cyan);
+  font-family: 'VT323', monospace;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* CRT scanlines */
+body::after{
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.04) 0px,
+    rgba(255,255,255,0.04) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+  z-index: 9999;
+}
+
+/* ---- typography ---- */
+h1{
+  font-family: 'Press Start 2P', cursive;
+  color: var(--neon-yellow);
+  text-shadow:
+    0 0 6px  var(--neon-pink),
+    0 0 14px var(--neon-pink),
+    0 0 28px var(--neon-pink);
+  line-height: 1.4;
+}
+h2{
+  font-family: 'Press Start 2P', cursive;
+  color: var(--neon-cyan);
+  font-size: 14px;
+  line-height: 1.6;
+}
+p{ font-size: 22px; margin: 10px 0; }
+
+/* ---- card / panel ---- */
+.card{
+  background: rgba(0,0,0,0.88);
+  border: 5px double var(--neon-cyan);
+  box-shadow: 8px 8px 0 var(--neon-pink);
+  padding: 28px 32px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ---- buttons ---- */
+.btn{
+  display: inline-block;
+  padding: 16px 24px;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 13px;
+  background: var(--neon-yellow);
+  color: #000;
+  border: 4px solid #000;
+  box-shadow: 6px 6px 0 #000;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background .1s ease, box-shadow .1s ease, transform .1s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.btn:hover{ background: var(--neon-cyan); }
+.btn:active{
+  box-shadow: 2px 2px 0 #000;
+  transform: translate(4px, 4px);
+}
+.btn--pink{
+  background: var(--neon-pink);
+  color: #fff;
+}
+.btn--pink:hover{ background: var(--muted-pink); }
+
+/* ---- inputs ---- */
+input[type="text"]{
+  display: block;
+  width: 100%;
+  padding: 12px;
+  font-size: 22px;
+  font-family: 'VT323', monospace;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: #000;
+  color: var(--neon-cyan);
+  border: 3px solid var(--neon-cyan);
+  outline: none;
+  transition: border-color .15s;
+}
+input[type="text"]:focus{ border-color: var(--neon-yellow); }
+
+label{
+  display: block;
+  font-size: 20px;
+  margin: 16px 0 6px;
+  color: var(--muted-pink);
+}
+
+/* ---- toast notification ---- */
+#toast-container{
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  pointer-events: none;
+}
+.toast{
+  font-family: 'Press Start 2P', cursive;
+  font-size: 12px;
+  padding: 14px 22px;
+  border: 4px solid #000;
+  box-shadow: 6px 6px 0 #000;
+  animation: toast-in .3s ease forwards, toast-out .4s ease 3.6s forwards;
+  white-space: nowrap;
+}
+.toast--bingo{
+  background: var(--neon-yellow);
+  color: #000;
+}
+.toast--fullhouse{
+  background: var(--neon-pink);
+  color: #fff;
+}
+.toast--info{
+  background: var(--neon-cyan);
+  color: #000;
+}
+@keyframes toast-in{
+  from{ opacity:0; transform:translateY(-20px) scale(.9); }
+  to  { opacity:1; transform:translateY(0)     scale(1); }
+}
+@keyframes toast-out{
+  from{ opacity:1; }
+  to  { opacity:0; transform:translateY(-10px); }
+}
+
+/* ---- blink cursor ---- */
+.blink::after{
+  content: "_";
+  animation: blink 1s steps(1) infinite;
+}
+@keyframes blink{ 50%{ opacity:0; } }
+
+{% block extra_style %}{% endblock %}
+</style>
+</head>
+<body>
+
+<div id="toast-container"></div>
+
+{% block body %}{% endblock %}
+
+<script>
+function showToast(message, type){
+  const container = document.getElementById('toast-container');
+  const el = document.createElement('div');
+  el.className = 'toast toast--' + type;
+  el.textContent = message;
+  container.appendChild(el);
+  setTimeout(() => el.remove(), 4100);
+}
+</script>
+{% block extra_script %}{% endblock %}
+</body>
+</html>

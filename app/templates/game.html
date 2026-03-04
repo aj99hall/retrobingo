@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+{% block title %}{{ player.name }}'s Card — Retro Bingo{% endblock %}
+
+{% block extra_style %}
+body{
+  padding: 16px;
+}
+.page{
+  max-width: 600px;
+  margin: 0 auto;
+}
+.header{
+  text-align: center;
+  margin-bottom: 16px;
+}
+.header h1{
+  font-size: 22px;
+  margin: 0 0 6px;
+}
+.header p{
+  font-size: 20px;
+  color: var(--muted-pink);
+  margin: 2px 0;
+}
+.bingo-badge{
+  display: inline-block;
+  background: var(--neon-yellow);
+  color: #000;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 11px;
+  padding: 6px 12px;
+  border: 3px solid #000;
+  box-shadow: 3px 3px 0 #000;
+  margin-top: 8px;
+}
+
+/* ---- grid ---- */
+.grid{
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px;
+  width: 100%;
+}
+.tile{
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4px;
+  font-size: clamp(9px, 2.4vw, 15px);
+  font-family: 'VT323', monospace;
+  letter-spacing: 0.5px;
+  line-height: 1.25;
+  text-transform: uppercase;
+  cursor: pointer;
+  background: rgba(0,0,0,0.8);
+  border: 2px solid var(--neon-cyan);
+  color: var(--neon-cyan);
+  transition: background .15s, border-color .15s, color .15s, transform .1s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  word-break: break-word;
+  hyphens: auto;
+}
+.tile:hover:not(.tile--free){
+  border-color: var(--neon-yellow);
+  color: var(--neon-yellow);
+}
+.tile:active:not(.tile--free){
+  transform: scale(0.93);
+}
+.tile--marked{
+  background: var(--neon-cyan);
+  color: #000;
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 8px var(--neon-cyan);
+}
+.tile--free{
+  background: var(--neon-pink);
+  color: #fff;
+  border-color: var(--neon-pink);
+  box-shadow: 0 0 10px var(--neon-pink);
+  cursor: default;
+  font-family: 'Press Start 2P', cursive;
+  font-size: clamp(7px, 1.8vw, 11px);
+}
+
+/* ---- overlay celebration ---- */
+.overlay{
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  z-index: 5000;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+}
+.overlay.active{ display: flex; }
+.overlay h2{
+  font-size: clamp(20px, 7vw, 40px);
+  color: var(--neon-yellow);
+  text-shadow: 0 0 20px var(--neon-pink);
+  margin-bottom: 16px;
+}
+.overlay p{
+  font-size: clamp(16px, 4vw, 24px);
+  color: var(--neon-cyan);
+}
+{% endblock %}
+
+{% block body %}
+<div class="page">
+  <div class="header">
+    <h1>Retro Bingo</h1>
+    <p>{{ player.name }}</p>
+    {% if has_bingo %}
+    <span class="bingo-badge">★ BINGO ★</span>
+    {% endif %}
+  </div>
+
+  <div class="grid" id="bingo-grid">
+    {% for i in range(25) %}
+    {% set tile_text = card[i] %}
+    {% set is_marked = i in marked %}
+    {% set is_free = i == 12 %}
+    <div
+      class="tile {% if is_free %}tile--free{% elif is_marked %}tile--marked{% endif %}"
+      data-index="{{ i }}"
+    >
+      {{ tile_text }}
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Personal BINGO overlay -->
+<div class="overlay" id="bingo-overlay">
+  <h2>★ BINGO! ★</h2>
+  <p>You got BINGO!</p>
+  <button class="btn" style="margin-top:24px" onclick="document.getElementById('bingo-overlay').classList.remove('active')">Keep Playing</button>
+</div>
+
+<!-- FULL HOUSE overlay -->
+<div class="overlay" id="fullhouse-overlay">
+  <h2>★ FULL HOUSE! ★</h2>
+  <p>All tiles marked!</p>
+  <p style="font-size:18px; color:var(--muted-pink); margin-top:10px;">Taking you to the end screen...</p>
+</div>
+{% endblock %}
+
+{% block extra_script %}
+<script src="{{ url_for('static', filename='js/game.js') }}"></script>
+<script>
+  initGame(
+    {{ has_bingo | tojson }},
+    {{ has_fullhouse | tojson }},
+    {{ marked | tojson }}
+  );
+</script>
+{% endblock %}

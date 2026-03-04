@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Join — Retro Bingo{% endblock %}
+
+{% block extra_style %}
+body{
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+main{
+  max-width: 480px;
+  width: 100%;
+}
+.error{
+  font-size: 18px;
+  color: var(--neon-pink);
+  margin: 10px 0;
+  border: 2px solid var(--neon-pink);
+  padding: 10px 14px;
+}
+{% endblock %}
+
+{% block body %}
+<main class="card">
+  <h1 class="blink">Retro<br>Bingo</h1>
+  <p style="color:var(--muted-pink); font-size:20px; margin-top:4px;">Enter your name to get a card</p>
+
+  {% if error %}
+  <p class="error">{{ error }}</p>
+  {% endif %}
+
+  <form method="POST" action="{{ url_for('join') }}" autocomplete="off">
+    <label for="name">Your name</label>
+    <input
+      type="text"
+      id="name"
+      name="name"
+      maxlength="40"
+      placeholder="e.g. Ash"
+      autofocus
+      required
+    >
+    <br>
+    <button type="submit" class="btn" style="margin-top:28px; width:100%; text-align:center;">
+      Get My Card
+    </button>
+  </form>
+</main>
+{% endblock %}

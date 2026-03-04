@@ -1,6 +1,9 @@
 .git
 .gitignore
+.venv
 node_modules
 Dockerfile
 docker-compose.yml
 README.md
+docs
+mvp.md

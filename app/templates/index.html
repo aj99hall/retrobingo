@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}Retro Bingo — Facilitator{% endblock %}
+
+{% block extra_style %}
+body{
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+main{
+  max-width: 640px;
+  width: 100%;
+}
+.qr-wrapper{
+  text-align: center;
+  margin: 24px 0;
+}
+.qr-wrapper img{
+  width: 220px;
+  height: 220px;
+  border: 6px solid var(--neon-cyan);
+  box-shadow: 0 0 20px var(--neon-cyan);
+  image-rendering: pixelated;
+}
+.join-url{
+  font-size: 18px;
+  color: var(--muted-pink);
+  word-break: break-all;
+  margin: 10px 0;
+}
+.stat{
+  font-size: 26px;
+  margin: 6px 0;
+}
+.stat span{
+  color: var(--neon-yellow);
+  font-family: 'Press Start 2P', cursive;
+  font-size: 20px;
+}
+.divider{
+  border: none;
+  border-top: 2px dashed var(--neon-cyan);
+  margin: 22px 0;
+  opacity: .4;
+}
+{% endblock %}
+
+{% block body %}
+<main>
+  <div class="card">
+    <h1 class="blink">Retro Bingo</h1>
+    <p style="color:var(--muted-pink)">Facilitator View</p>
+
+    <hr class="divider">
+
+    <p class="stat">Players joined: <span id="player-count">{{ player_count }}</span></p>
+
+    <hr class="divider">
+
+    <p style="font-size:20px; color:var(--neon-yellow)">Scan to join:</p>
+    <div class="qr-wrapper">
+      <img src="data:image/png;base64,{{ qr_b64 }}" alt="QR Code to join game">
+    </div>
+    <p class="join-url">{{ join_url }}</p>
+  </div>
+</main>
+{% endblock %}
+
+{% block extra_script %}
+<script>
+// Refresh player count every 5 seconds
+setInterval(async () => {
+  try {
+    const r = await fetch('/api/poll?since=0');
+    const d = await r.json();
+    if (!d.error) {
+      // Reload to update player count
+      const countEl = document.getElementById('player-count');
+      // Re-fetch count via a lightweight endpoint would be ideal,
+      // but for simplicity we reload the page periodically
+    }
+  } catch(e) {}
+}, 5000);
+
+// Simple page refresh every 10s to update player count
+setTimeout(() => location.reload(), 10000);
+</script>
+{% endblock %}

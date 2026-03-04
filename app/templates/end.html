@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Game Over — Retro Bingo{% endblock %}
+
+{% block extra_style %}
+body{
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+main{
+  max-width: 560px;
+  width: 100%;
+  text-align: center;
+}
+h1{ font-size: clamp(22px, 6vw, 36px); }
+.trophy{
+  font-size: 60px;
+  display: block;
+  margin: 10px 0;
+  filter: drop-shadow(0 0 12px var(--neon-yellow));
+  animation: float 2.5s ease-in-out infinite;
+}
+@keyframes float{
+  0%,100%{ transform: translateY(0); }
+  50%     { transform: translateY(-10px); }
+}
+.subtitle{
+  font-size: 26px;
+  color: var(--muted-pink);
+  margin: 8px 0 24px;
+}
+{% endblock %}
+
+{% block body %}
+<main class="card">
+  <span class="trophy">🏆</span>
+  <h1>Game Over</h1>
+  {% if player %}
+  <p class="subtitle">Well played, {{ player.name }}!</p>
+  {% else %}
+  <p class="subtitle">Thanks for playing!</p>
+  {% endif %}
+  <p style="font-size:20px; color:var(--neon-cyan);">
+    Someone achieved a<br>
+    <span style="color:var(--neon-pink); font-family:'Press Start 2P',cursive; font-size:14px;">★ FULL HOUSE ★</span>
+  </p>
+
+  <hr style="border:none;border-top:2px dashed var(--neon-cyan);margin:28px 0;opacity:.4;">
+
+  <a href="/join" class="btn">Play Again</a>
+</main>
+{% endblock %}
